@@ -1,15 +1,25 @@
 import './style.css'
-import { Sphere } from './Sphere';
+import { Body } from './Body';
 import { Vec2 } from './Vec2';
 
-const spheres: Sphere[] = [
-  new Sphere(new Vec2(10, 10), 5, new Vec2(1, 1)),
-  new Sphere(new Vec2(300, 100), 10, new Vec2(0, -1)),
-  new Sphere(new Vec2(100, 100), 5, new Vec2(0, 1)),
+const spheres: Body[] = [
+  new Body(new Vec2(500, 500), 1000, new Vec2(0, 1)),
+  new Body(new Vec2(700, 500), 2000, new Vec2(0, -1))
+  //new Body(new Vec2(100, 100), 5001, new Vec2(0, 1)),
 ]
 const canvas = document.querySelector<HTMLCanvasElement>('#gl') as HTMLCanvasElement;
 const ctx = init(canvas) as CanvasRenderingContext2D;
-requestAnimationFrame(tick);
+
+
+let fpsInterval = 0, startTime = 0, now = 0, then = 0, elapsed = 0;
+function initFPS(fps: number) {
+  fpsInterval = 1000 / fps;
+  then = Date.now();
+  startTime = then;
+  tick();
+}
+
+initFPS(60);
 
 
 
@@ -34,24 +44,51 @@ function init(canvas: HTMLCanvasElement | null): CanvasRenderingContext2D | unde
 }
 
 function tick() {
+
+  requestAnimationFrame(tick);
+
+  now = Date.now();
+  elapsed = now - then;
+
+  if (elapsed <= fpsInterval) {
+    return;
+  }
+
+  then = now - (elapsed % fpsInterval);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   updateAccelerations(spheres);
   updatePositions(spheres);
-  renderSpheres(ctx, spheres);
+  renderBodies(ctx, spheres);
 
-  requestAnimationFrame(tick);
 }
 
-function updateAccelerations(objects: Sphere[]) {
-  objects.forEach((o, i) => {
-    o.updateAcceleration(objects.filter((_, j) => j !== i))
-  })
+function updateAccelerations(objects: Body[]): void {
+  if (objects.length < 2) {
+    return;
+  }
+
+  for (let i = 0; i < objects.length; ++i) {
+    for (let j = 0; j < objects.length; ++j) {
+      if (i === j) {
+        continue;
+      }
+
+      const o1 = objects[i];
+      const o2 = objects[j];
+
+      const gravity_o1_o2 = o1.calcGravityForce(o2);
+      const gravity_o2_o1 = gravity_o1_o2.negate();
+
+      o1.addVelocity(gravity_o1_o2);
+      o2.addVelocity(gravity_o2_o1);
+    }
+  }
 }
-function updatePositions(objects: Sphere[]) {
+function updatePositions(objects: Body[]) {
   objects.forEach(o => o.updatePosition());
 }
-function renderSpheres(ctx: CanvasRenderingContext2D, objects: Sphere[]) {
+function renderBodies(ctx: CanvasRenderingContext2D, objects: Body[]) {
   objects.forEach(o => o.render(ctx))
 }
 
