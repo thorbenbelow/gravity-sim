@@ -12,7 +12,14 @@ export class Body {
 
   calcGravityForce(obj: Body): Vec2 {
     const r = new Vec2(this.pos.x - obj.pos.x, this.pos.y - obj.pos.y);
-    const factor = -GRAVITY_CONSTANT * this.mass * obj.mass / r.length() ** 3;
+
+    const radius = r.length();
+
+    if (radius < 10) {
+      return new Vec2(0, 0)
+    }
+
+    const factor = -GRAVITY_CONSTANT * this.mass * obj.mass / radius ** 3;
 
     return new Vec2(
       factor * r.x,

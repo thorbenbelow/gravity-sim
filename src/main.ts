@@ -5,15 +5,27 @@ import { Vec2 } from './Vec2';
 
 const RED = 'rgb(200, 0, 0)';
 const BLUE = 'rgb(0, 0, 200)';
+const GREEN = 'rgb(0, 200, 0)';
 
 const spheres: Body[] = [
   new Body(new Vec2(700, 500), 1000, new Vec2(0, 1), RED),
-  new Body(new Vec2(900, 500), 1000, new Vec2(0, -1), BLUE)
-  //new Body(new Vec2(100, 100), 5001, new Vec2(0, 1)),
+  new Body(new Vec2(900, 500), 1000, new Vec2(0, -1), BLUE),
 ]
 const canvas = document.querySelector<HTMLCanvasElement>('#gl') as HTMLCanvasElement;
 const ctx = init(canvas) as CanvasRenderingContext2D;
 
+document.getElementById('plus')?.addEventListener('click', () => {
+  const random = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const colors = [RED, BLUE, GREEN]
+
+  spheres.push(new Body(
+    new Vec2(random(window.innerWidth * 0.25, window.innerWidth * 0.8), random(window.innerHeight * 0.2, window.innerHeight * 0.8)),
+    random(100, 3000),
+    new Vec2(0, 0),
+    colors[random(0, 3)]
+  ))
+})
 
 let fpsInterval = 0, now = 0, then = 0, elapsed = 0;
 function initFPS(fps: number) {

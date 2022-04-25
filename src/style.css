@@ -5,3 +5,13 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.btn{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0.125rem 1rem;
+  border: 1px solid black;
+  background-color: white;
+  margin: 35px 25px;
+} 
