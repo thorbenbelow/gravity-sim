@@ -4,18 +4,17 @@ import { Vec2 } from './Vec2';
 
 const spheres: Body[] = [
   new Body(new Vec2(500, 500), 1000, new Vec2(0, 1)),
-  new Body(new Vec2(700, 500), 2000, new Vec2(0, -1))
+  new Body(new Vec2(700, 500), 1000, new Vec2(0, -1))
   //new Body(new Vec2(100, 100), 5001, new Vec2(0, 1)),
 ]
 const canvas = document.querySelector<HTMLCanvasElement>('#gl') as HTMLCanvasElement;
 const ctx = init(canvas) as CanvasRenderingContext2D;
 
 
-let fpsInterval = 0, startTime = 0, now = 0, then = 0, elapsed = 0;
+let fpsInterval = 0, now = 0, then = 0, elapsed = 0;
 function initFPS(fps: number) {
   fpsInterval = 1000 / fps;
   then = Date.now();
-  startTime = then;
   tick();
 }
 
