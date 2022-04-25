@@ -8,14 +8,6 @@ export class Vec2 {
     return new Vec2(this.x + v.x, this.y + v.y);
   }
 
-  scalarMultiply(n: number): Vec2 {
-    return new Vec2(this.x * n, this.y * n);
-  }
-
-  distance(v: Vec2): number {
-    return Math.sqrt((this.x - v.x) ** 2 - (this.y - v.y));
-  }
-
   length(): number {
     return Math.sqrt(this.x ** 2 + this.y ** 2);
   }

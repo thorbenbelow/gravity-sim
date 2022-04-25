@@ -6,7 +6,8 @@ export class Body {
   constructor(
     public pos: Vec2,
     readonly mass: number,
-    public velocity: Vec2 = new Vec2(0, 0)
+    public velocity: Vec2 = new Vec2(0, 0),
+    readonly color: string
   ) { }
 
   calcGravityForce(obj: Body): Vec2 {
@@ -22,7 +23,6 @@ export class Body {
   addVelocity(gravityForce: Vec2): void {
     const acceleration = new Vec2(gravityForce.x / this.mass, gravityForce.y / this.mass);
     this.velocity = this.velocity.addVec(acceleration);
-    console.log(this.velocity);
   }
 
   updatePosition() {
@@ -30,12 +30,10 @@ export class Body {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    const RED = 'rgb(200, 0, 0)';
-    ctx.fillStyle = RED;
+    ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.arc(this.pos.x, this.pos.y, this.mass / 100, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.stroke();
+    ctx.fill();
   }
 }
 
