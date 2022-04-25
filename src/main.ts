@@ -3,8 +3,8 @@ import { Body } from './Body';
 import { Vec2 } from './Vec2';
 
 const spheres: Body[] = [
-  new Body(new Vec2(500, 500), 1000, new Vec2(0, 1)),
-  new Body(new Vec2(700, 500), 1000, new Vec2(0, -1))
+  new Body(new Vec2(700, 500), 1000, new Vec2(0, 1)),
+  new Body(new Vec2(900, 500), 1000, new Vec2(0, -1))
   //new Body(new Vec2(100, 100), 5001, new Vec2(0, 1)),
 ]
 const canvas = document.querySelector<HTMLCanvasElement>('#gl') as HTMLCanvasElement;
